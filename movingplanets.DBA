@@ -1,0 +1,83 @@
+
+rem Programmed by: The Great Fontenotz
+
+posx=0
+posz=0
+angle=0
+radius=200
+
+posxx=0
+poszz=0
+angle2=0
+radius2=20
+
+sync on:sync rate 400
+randomize timer()
+hide mouse
+backdrop on
+color backdrop rgb(0,0,0)
+
+make matrix 1,1000,1000,10,10
+load image "background.bmp",2
+position matrix 1,-500,-100,-500
+prepare matrix texture 1,2,1,1
+update matrix 1
+
+make object sphere 1,100
+color object 1,rgb(245,200,0)
+
+make object sphere 2,20
+color object 2,rgb(0,255,100)
+position object 2,200,0,200
+
+make object sphere 3,12
+color object 3,rgb(rnd(255),rnd(255),rnd(255))
+position object 3,200,-10,200
+
+make object sphere 4,17
+color object 4,rgb(255,0,0)
+position object 4,210,-20,210
+
+make object cylinder 5,10
+color object 5,rgb(rnd(255),rnd(255),rnd(255))
+position object 5,210,-40,210
+
+make light 1
+set directional light 1,0,0,0
+color light 1,rgb(255,0,0)
+
+position camera 0,200,-400
+point camera 0,0,0
+
+do
+  posx=cos(angle)*radius
+  posz=sin(angle)*radius
+  angle=angle+1
+  
+  posxx=posx+cos(angle2)*radius2
+  poszz=posz+sin(angle2)*radius2
+
+  angle2=angle2+2
+  position object 2,posx,0,posz
+  position object 3,posxx,0,poszz
+
+  position object 4,posx+50,0,posz+50
+  position object 5,posx+100,0,posz+100  
+
+  position light 1,posx,0,posz
+  point light 1,0,0,0
+  if object hit(5,1)=1
+    boom()
+    exit
+  endif
+  
+  sync
+  
+loop
+show mouse
+
+end
+
+function boom()
+  delete object 5
+endfunction
